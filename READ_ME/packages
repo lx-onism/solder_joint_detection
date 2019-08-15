@@ -1,0 +1,10 @@
+PIL
+opencv-python
+scikit-image
+matplotlib
+tensorflow-gpu==1.5.0
+tensorboard 
+keras
+numpy
+xml
+

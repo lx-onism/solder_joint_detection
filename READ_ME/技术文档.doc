@@ -1,0 +1,26 @@
+基于深度学习的焊接点检测
+一、环境配置
+系统：Ubuntu16.04
+框架：keras（基于tensorflow）
+语言：python3
+IDE：pycharm
+GPU加速：cuda9.0，cudnn7.0.5
+安装cuda和cudnn可参考博客：https://www.jianshu.com/p/8c82f944e417
+需要安装的python第三方库在/READ_ME/packages.txt下查看
+二、制作数据集
+	1、装好所需要的第三方库后，运行data_making文件夹下的label_point.py进行焊接点标注.
+在data_making文件夹下打开终端，输入命令：python3 label_point.py
+	运行程序后会显示源数据路径中指定的一张图片，用鼠标直接在图片中点出需要标注的点后关闭图片，图片路径以及相应的焊点坐标会自动保存到label.txt文件中
+注：需要在程序中修改源数据路径，在终端下运行需要将路径修改为绝对路径，每标注完一张图片后需要修改路径并重新运行程序
+	2、画矩形框，为每个焊接点生成一个矩形框并将其左上右下对角点坐标存入data.txt。在data_making文件夹下打开终端，输入命令：python3 show_rec.py
+注：在程序中修改文件路径
+	3、数据增强。在data_making文件夹下打开终端，输入命令：python3 data_aug.py。在程序中设置需要新生成的图片个数。程序将自动生成原图片、画有标注信息的对应图片、标注信息txt文件并保存在制定文件夹中
+注：在程序中修改文件路径
+	4、生成voc2007标准格式。运行python3 txt2xml.py将步骤3中生成的标注信息txt文件生成xml文件；运行python3 to_main.py将数据集划分为训练集、验证集、测试集；运行python3 voc_annotation.py 生成模型训练程序所需要的txt文件
+三、训练模型
+	运行train.py文件开始训练模型，具体请参考solder_joint_detedtion文件夹下的README.md文件。
+	可能遇到的问题：
+	1）资源耗尽：需要将batch_size减小，通常减小一半。即：若原来为64，则改为32
+四、测试模型
+	在logs/000/目录下已保存有一个原始模型。修改程序中相应的路径，即可将其导入程序中。运行yolo_video.py文件可进行单张图片测试；运行camera_detection.py可进行视频检测。
+注：需要在yolo.py程序中修改文件路径, 在终端下运行需要将路径修改为绝对路径
